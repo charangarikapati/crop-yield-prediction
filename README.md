@@ -139,3 +139,4 @@ Open `notebooks/01_crop_yield_prediction_master.ipynb` in VS Code or JupyterLab.
 
 ## 📄 License & Attribution
 Developed for the Nagpur Agritech Procurement Intelligence System. All model cards follow Google / Mitchell et al. (2019) standards.
+
