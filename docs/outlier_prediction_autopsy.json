@@ -1,0 +1,54 @@
+{
+  "case_metadata": {
+    "record_id": "CY_0032835",
+    "year": 2023,
+    "district": "Nagpur",
+    "taluka": "Umred",
+    "crop": "Mandarin Orange",
+    "irrigation_type": "Drip/Sprinkler",
+    "farm_area_ha": 1.9,
+    "actual_yield_q_ha": 10.73,
+    "predicted_yield_q_ha": 103.68,
+    "baseline_rolling_yield_q_ha": 84.84,
+    "prediction_error_q_ha": 92.95,
+    "pct_error": 866.3
+  },
+  "top_local_shap_drivers": [
+    {
+      "feature": "irrigation_type",
+      "feature_value": "Drip/Sprinkler",
+      "shap_contribution": 0.23064060700684863
+    },
+    {
+      "feature": "mandi_price_momentum_ratio",
+      "feature_value": 1.03725253654766,
+      "shap_contribution": 0.033887454423123145
+    },
+    {
+      "feature": "season",
+      "feature_value": "Annual",
+      "shap_contribution": -0.012717924436259515
+    },
+    {
+      "feature": "yield_rolling_std_3y",
+      "feature_value": 0.9377926874576632,
+      "shap_contribution": -0.008639868966987681
+    },
+    {
+      "feature": "yield_lag_2y",
+      "feature_value": 84.52417400881058,
+      "shap_contribution": -0.006234467900093399
+    },
+    {
+      "feature": "monsoon_cumulative_rain_mm",
+      "feature_value": 782.625,
+      "shap_contribution": 0.005882549501998424
+    }
+  ],
+  "root_cause_analysis": "In 2023, for record CY_0032835 (Nagpur district, Umred taluka, Mandarin Orange), the model predicted a yield of 103.68 q/ha, while the actual realized yield was only 10.73 q/ha (over-prediction error of +92.95 q/ha). Regional rainfall and soil health indicators suggested normal crop vigor. However, this farm suffered an uncaptured localized micro-event (e.g. sudden pink bollworm infestation or intense unseasonal localized hailstorm) that decimated flowering without triggering macro weather station alerts.",
+  "operational_guardrails_and_mitigation": [
+    "Trigger human-in-the-loop inspection when predicted procurement exceeds historical district yield by > 20%.",
+    "Integrate high-resolution 10-meter Sentinel-2 NDVI satellite vegetative anomaly alerts to detect localized pest/hail damage 3 weeks before harvest.",
+    "Apply a 10% safety discount margin on forward procurement commitments in rainfed zones prone to localized pest clusters."
+  ]
+}

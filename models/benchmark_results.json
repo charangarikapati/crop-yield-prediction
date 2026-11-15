@@ -1,0 +1,106 @@
+{
+  "benchmark_comparison": {
+    "Baseline": {
+      "val": {
+        "mae_q_ha": 4.879,
+        "rmse_q_ha": 9.3,
+        "wape_pct": 24.12,
+        "asymmetric_cost": 5.751,
+        "recall_at_80_precision": 0.0
+      },
+      "test": {
+        "mae_q_ha": 4.557,
+        "rmse_q_ha": 9.153,
+        "wape_pct": 21.57,
+        "asymmetric_cost": 5.196,
+        "recall_at_80_precision": 0.0
+      }
+    },
+    "Ridge": {
+      "val": {
+        "mae_q_ha": 6.128,
+        "rmse_q_ha": 10.615,
+        "wape_pct": 30.29,
+        "asymmetric_cost": 6.504,
+        "recall_at_80_precision": 0.069
+      },
+      "test": {
+        "mae_q_ha": 7.299,
+        "rmse_q_ha": 10.803,
+        "wape_pct": 34.55,
+        "asymmetric_cost": 7.707,
+        "recall_at_80_precision": 0.0
+      }
+    },
+    "RandomForest": {
+      "val": {
+        "mae_q_ha": 3.985,
+        "rmse_q_ha": 8.568,
+        "wape_pct": 19.7,
+        "asymmetric_cost": 4.659,
+        "recall_at_80_precision": 0.0
+      },
+      "test": {
+        "mae_q_ha": 3.944,
+        "rmse_q_ha": 8.524,
+        "wape_pct": 18.67,
+        "asymmetric_cost": 4.502,
+        "recall_at_80_precision": 0.0
+      }
+    },
+    "LightGBM": {
+      "val": {
+        "mae_q_ha": 3.756,
+        "rmse_q_ha": 8.463,
+        "wape_pct": 18.57,
+        "asymmetric_cost": 4.398,
+        "recall_at_80_precision": 0.224
+      },
+      "test": {
+        "mae_q_ha": 3.939,
+        "rmse_q_ha": 8.498,
+        "wape_pct": 18.65,
+        "asymmetric_cost": 4.493,
+        "recall_at_80_precision": 0.0
+      }
+    }
+  },
+  "features": [
+    "area_hectares",
+    "pre_sowing_mandi_price",
+    "district_mandi_price_spread",
+    "mandi_price_momentum_ratio",
+    "monsoon_cumulative_rain_mm",
+    "heavy_rain_days_count",
+    "max_consecutive_dry_days",
+    "monsoon_rainfall_anomaly_ratio",
+    "dry_spell_severity_index",
+    "is_severe_dry_spell",
+    "heavy_rain_intensity_ratio",
+    "rainfall_deficit_pct",
+    "soil_nitrogen_kg_ha",
+    "soil_phosphorus_kg_ha",
+    "soil_potassium_kg_ha",
+    "soil_ph",
+    "soil_organic_carbon_pct",
+    "soil_npk_ratio",
+    "soil_ph_stress",
+    "soil_productivity_index",
+    "yield_lag_1y",
+    "yield_lag_2y",
+    "yield_rolling_mean_3y",
+    "yield_rolling_std_3y",
+    "taluka_target_encoded",
+    "district",
+    "crop",
+    "season",
+    "irrigation_type",
+    "farm_scale_tier"
+  ],
+  "verification": {
+    "pct_improvement_val": 23.02,
+    "baseline_beat_passed": true,
+    "generalization_gap_pct": 4.87,
+    "generalization_passed": true
+  }
+}

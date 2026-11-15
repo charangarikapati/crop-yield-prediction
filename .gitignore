@@ -1,0 +1,28 @@
+# Virtual environment
+.venv/
+venv/
+env/
+ENV/
+
+# Python cache & compiled files
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.pytest_cache/
+
+# Matplotlib & cache directories
+docs/.mplconfig/
+.mplconfig/
+
+# Jupyter Notebook checkpoints
+.ipynb_checkpoints/
+*-checkpoint.ipynb
+
+# OS generated files
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# Temporary and local test files
+src/quick_test.py

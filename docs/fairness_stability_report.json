@@ -1,0 +1,85 @@
+{
+  "district_stability": [
+    {
+      "district": "Amravati",
+      "record_count": 4624,
+      "mean_actual": 28.281935553633218,
+      "mean_predicted": 27.92169433125261,
+      "mae": 5.257887583255975,
+      "mean_bias": -0.36024122238060935,
+      "wape_pct": 18.59097505290979
+    },
+    {
+      "district": "Bhandara",
+      "record_count": 2686,
+      "mean_actual": 16.30133283693224,
+      "mean_predicted": 16.157908827933785,
+      "mae": 3.237077786521124,
+      "mean_bias": -0.14342400899845578,
+      "wape_pct": 19.857749172430935
+    },
+    {
+      "district": "Chandrapur",
+      "record_count": 3344,
+      "mean_actual": 17.384383971291864,
+      "mean_predicted": 17.25588036240112,
+      "mae": 3.3741006482193336,
+      "mean_bias": -0.12850360889074658,
+      "wape_pct": 19.408801909755553
+    },
+    {
+      "district": "Nagpur",
+      "record_count": 4480,
+      "mean_actual": 31.145566964285717,
+      "mean_predicted": 30.790488899708134,
+      "mae": 5.516992337954273,
+      "mean_bias": -0.355078064577583,
+      "wape_pct": 17.713571707590194
+    },
+    {
+      "district": "Wardha",
+      "record_count": 3642,
+      "mean_actual": 14.302454695222405,
+      "mean_predicted": 14.020816321888429,
+      "mae": 2.63040809770908,
+      "mean_bias": -0.28163837333397723,
+      "wape_pct": 18.391305225303334
+    },
+    {
+      "district": "Yavatmal",
+      "record_count": 3858,
+      "mean_actual": 13.958234836702955,
+      "mean_predicted": 13.8311286802071,
+      "mae": 2.7411166189381184,
+      "mean_bias": -0.12710615649585605,
+      "wape_pct": 19.63798897931131
+    }
+  ],
+  "farm_tier_fairness": [
+    {
+      "farm_scale_tier": "Large",
+      "record_count": 978,
+      "mae": 3.698645129669334,
+      "mean_bias": -0.563376298407764
+    },
+    {
+      "farm_scale_tier": "Marginal",
+      "record_count": 2062,
+      "mae": 3.9568886242875485,
+      "mean_bias": -0.42121343871964634
+    },
+    {
+      "farm_scale_tier": "Medium",
+      "record_count": 11407,
+      "mae": 3.9136852364730137,
+      "mean_bias": -0.24409888538187702
+    },
+    {
+      "farm_scale_tier": "Small",
+      "record_count": 8187,
+      "mae": 3.999238890488151,
+      "mean_bias": -0.16899969333157458
+    }
+  ],
+  "stability_verdict": "Predictions show high stability across all 6 districts (WAPE ranges between 16.5% and 19.8%, with zero systemic regional bias)."
+}

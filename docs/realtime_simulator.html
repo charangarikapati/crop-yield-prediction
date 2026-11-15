@@ -1,0 +1,280 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Real-Time Crop Yield & Procurement Decision Simulator | Nagpur Agritech</title>
+<style>
+  :root {
+    --bg-main: #0b132b;
+    --bg-card: #1c2541;
+    --text-primary: #f8f9fa;
+    --text-secondary: #a0aec0;
+    --accent-emerald: #10b981;
+    --accent-blue: #38bdf8;
+    --accent-amber: #f59e0b;
+    --accent-rose: #f43f5e;
+    --border: #3a506b;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; }
+  body { background: var(--bg-main); color: var(--text-primary); padding: 30px 15px; }
+  .container { max-width: 1150px; margin: 0 auto; }
+  header { text-align: center; margin-bottom: 30px; }
+  header h1 { font-size: 26px; color: var(--accent-blue); margin-bottom: 6px; }
+  header p { font-size: 14px; color: var(--text-secondary); }
+  .grid-layout { display: grid; grid-template-columns: 1.1fr 1fr; gap: 25px; }
+  .card { background: var(--bg-card); border: 1px solid var(--border); border-radius: 12px; padding: 25px; box-shadow: 0 8px 24px rgba(0,0,0,0.4); }
+  .card h2 { font-size: 18px; color: var(--accent-emerald); margin-bottom: 18px; border-bottom: 1px solid var(--border); padding-bottom: 8px; }
+  .form-group { margin-bottom: 16px; }
+  label { display: block; font-size: 13px; font-weight: 600; color: var(--text-secondary); margin-bottom: 6px; text-transform: uppercase; letter-spacing: 0.5px; }
+  select, input[type="range"], input[type="number"] { width: 100%; background: #0b132b; border: 1px solid var(--border); color: var(--text-primary); padding: 10px 12px; border-radius: 6px; font-size: 14px; }
+  select:focus, input:focus { outline: none; border-color: var(--accent-blue); }
+  .slider-val { font-weight: 700; color: var(--accent-blue); float: right; }
+  .result-banner { border-radius: 8px; padding: 20px; text-align: center; margin-bottom: 20px; border: 1px solid transparent; }
+  .banner-normal { background: rgba(56, 189, 248, 0.1); border-color: var(--accent-blue); }
+  .banner-surplus { background: rgba(16, 185, 129, 0.12); border-color: var(--accent-emerald); }
+  .banner-alert { background: rgba(244, 63, 94, 0.15); border-color: var(--accent-rose); }
+  .metric-big { font-size: 38px; font-weight: 800; color: var(--text-primary); line-height: 1; }
+  .metric-unit { font-size: 14px; color: var(--text-secondary); margin-top: 4px; }
+  .metric-diff { font-size: 16px; font-weight: 700; margin-top: 8px; }
+  .diff-up { color: var(--accent-emerald); }
+  .diff-down { color: var(--accent-rose); }
+  .kpi-row { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 20px; }
+  .kpi-box { background: rgba(0,0,0,0.25); border: 1px solid var(--border); border-radius: 6px; padding: 12px; text-align: center; }
+  .kpi-val { font-size: 18px; font-weight: 700; color: var(--accent-blue); }
+  .kpi-lbl { font-size: 11px; color: var(--text-secondary); text-transform: uppercase; }
+  .action-box { background: rgba(255,255,255,0.03); border-left: 4px solid var(--accent-amber); padding: 14px; border-radius: 4px; font-size: 13px; line-height: 1.5; }
+  .tier-tag { display: inline-block; padding: 3px 10px; border-radius: 12px; font-size: 12px; font-weight: 700; text-transform: uppercase; margin-bottom: 8px; }
+  .tier-1 { background: rgba(16, 185, 129, 0.2); color: var(--accent-emerald); border: 1px solid var(--accent-emerald); }
+  .tier-2 { background: rgba(56, 189, 248, 0.2); color: var(--accent-blue); border: 1px solid var(--accent-blue); }
+  .tier-3 { background: rgba(244, 63, 94, 0.2); color: var(--accent-rose); border: 1px solid var(--accent-rose); }
+  .footer-links { text-align: center; margin-top: 25px; font-size: 13px; color: var(--text-secondary); }
+  .footer-links a { color: var(--accent-blue); text-decoration: none; margin: 0 10px; }
+</style>
+</head>
+<body>
+
+<div class="container">
+  <header>
+    <h1>District-Level Crop Yield & Real-Time Procurement Simulator</h1>
+    <p>Vidarbha Commodity Procurement Intelligence &bull; Nagpur Agritech</p>
+  </header>
+
+  <div class="grid-layout">
+    <!-- Input Form -->
+    <div class="card">
+      <h2>Live Scenario Parameters</h2>
+      
+      <div class="form-group">
+        <label for="district">District (Vidarbha Region)</label>
+        <select id="district" onchange="calculateRealtime()">
+          <option value="Nagpur">Nagpur (Sub-humid, Black soil)</option>
+          <option value="Wardha">Wardha (Cotton heartland, Deep black)</option>
+          <option value="Amravati">Amravati (Soybean/Cotton/Orange)</option>
+          <option value="Chandrapur">Chandrapur (Forest-alluvial transition)</option>
+          <option value="Bhandara">Bhandara (High rainfall, Paddy/Soybean)</option>
+          <option value="Yavatmal" selected>Yavatmal (Dry cotton belt, Vulnerable)</option>
+        </select>
+      </div>
+
+      <div class="form-group">
+        <label for="crop">Target Crop</label>
+        <select id="crop" onchange="calculateRealtime()">
+          <option value="Soybean">Soybean (Kharif Cash Crop)</option>
+          <option value="Cotton" selected>Cotton (Kharif Fiber Crop)</option>
+          <option value="Tur">Tur / Pigeon Pea (Kharif Pulse)</option>
+          <option value="Gram">Gram / Chickpea (Rabi Pulse)</option>
+          <option value="Wheat">Wheat (Rabi Cereal)</option>
+          <option value="Mandarin Orange">Mandarin Orange (Perennial Citrus)</option>
+        </select>
+      </div>
+
+      <div class="form-group">
+        <label for="irrigation">Irrigation System</label>
+        <select id="irrigation" onchange="calculateRealtime()">
+          <option value="Rainfed" selected>Rainfed (Direct Monsoon Dependent)</option>
+          <option value="Well/Borewell">Well / Borewell (Semi-buffered)</option>
+          <option value="Canal">Canal Irrigation (Stable Water Delivery)</option>
+          <option value="Drip/Sprinkler">Drip / Micro-Sprinkler (Precision Protected)</option>
+        </select>
+      </div>
+
+      <div class="form-group">
+        <label>Monsoon Cumulative Rainfall (June–August) <span class="slider-val" id="lbl-rain">680 mm</span></label>
+        <input type="range" id="rain" min="300" max="1500" step="10" value="680" oninput="updateRainLabel(this.value); calculateRealtime()">
+      </div>
+
+      <div class="form-group">
+        <label>Max Consecutive Dry Days (Flowering Window) <span class="slider-val" id="lbl-dry">18 days</span></label>
+        <input type="range" id="dry" min="0" max="32" step="1" value="18" oninput="updateDryLabel(this.value); calculateRealtime()">
+      </div>
+
+      <div class="form-group">
+        <label>Pre-Sowing APMC Mandi Price <span class="slider-val" id="lbl-price">Rs 6,800 / q</span></label>
+        <input type="range" id="price" min="2000" max="10000" step="100" value="6800" oninput="updatePriceLabel(this.value); calculateRealtime()">
+      </div>
+
+      <div class="form-group">
+        <label for="area">Farm / Cluster Area (Hectares)</label>
+        <input type="number" id="area" min="0.5" max="500.0" step="0.5" value="5.0" oninput="calculateRealtime()">
+      </div>
+    </div>
+
+    <!-- Output Dashboard -->
+    <div class="card">
+      <h2>Real-Time Prediction & Procurement Action</h2>
+      
+      <div id="banner-box" class="result-banner banner-alert">
+        <div class="metric-big" id="res-yield">11.8 q/ha</div>
+        <div class="metric-unit">Predicted Harvest Yield (Quintals / Hectare)</div>
+        <div class="metric-diff diff-down" id="res-diff">-26.3% vs Historical Normal</div>
+      </div>
+
+      <div class="kpi-row">
+        <div class="kpi-box">
+          <div class="kpi-val" id="res-baseline">16.0 q/ha</div>
+          <div class="kpi-lbl">Historical 3-Yr Baseline</div>
+        </div>
+        <div class="kpi-box">
+          <div class="kpi-val" id="res-total">59.0 Q</div>
+          <div class="kpi-lbl">Total Volume (Quintals)</div>
+        </div>
+      </div>
+
+      <div style="margin-bottom: 14px;">
+        <span id="tier-tag" class="tier-tag tier-3">Tier 3: Deficit Hedging</span>
+      </div>
+
+      <div class="action-box" id="action-text">
+        <strong>Severe Yield Shortfall Alert:</strong> High consecutive dry spell (18 days) in a rainfed tract causes severe moisture stress during flowering. 
+        <strong>Action:</strong> Divert warehouse capacity and truck fleets to neighboring surplus districts (e.g. Bhandara/Chandrapur); initiate commodity exchange paper hedging.
+      </div>
+
+      <div style="margin-top: 20px; font-size: 12px; color: var(--text-secondary); line-height: 1.6;">
+        <strong>Signal Drivers:</strong><br>
+        &bull; <em>Rainfall Anomaly:</em> <span id="sig-rain">76.4% of normal</span><br>
+        &bull; <em>Drought Cliff:</em> <span id="sig-dry">18 days (Exceeds critical 14-day threshold)</span><br>
+        &bull; <em>Irrigation Buffer:</em> <span id="sig-irr">Rainfed (0% drought mitigation)</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="footer-links">
+    <a href="findings_deck_slides.html" target="_blank">&larr; Open 8-Slide Findings Deck</a> &bull;
+    <a href="ModelCard.md" target="_blank">View Production Model Card</a> &bull;
+    <a href="procurement_prioritization_matrix.csv" target="_blank">Download Prioritization CSV</a>
+  </div>
+</div>
+
+<script>
+const BASE_YIELDS = {
+  'Soybean': 15.5,
+  'Cotton': 16.5,
+  'Tur': 11.5,
+  'Gram': 13.0,
+  'Wheat': 26.5,
+  'Mandarin Orange': 88.0
+};
+
+const DISTRICT_NORMAL_RAIN = {
+  'Nagpur': 1050,
+  'Wardha': 980,
+  'Amravati': 920,
+  'Chandrapur': 1200,
+  'Bhandara': 1300,
+  'Yavatmal': 890
+};
+
+const IRR_FACTORS = {
+  'Rainfed': 0.90,
+  'Well/Borewell': 1.10,
+  'Canal': 1.15,
+  'Drip/Sprinkler': 1.25
+};
+
+function updateRainLabel(val) { document.getElementById('lbl-rain').innerText = val + ' mm'; }
+function updateDryLabel(val) { document.getElementById('lbl-dry').innerText = val + ' days'; }
+function updatePriceLabel(val) { document.getElementById('lbl-price').innerText = 'Rs ' + Number(val).toLocaleString() + ' / q'; }
+
+function calculateRealtime() {
+  const district = document.getElementById('district').value;
+  const crop = document.getElementById('crop').value;
+  const irrigation = document.getElementById('irrigation').value;
+  const rain = parseFloat(document.getElementById('rain').value);
+  const dry = parseInt(document.getElementById('dry').value);
+  const price = parseFloat(document.getElementById('price').value);
+  const area = parseFloat(document.getElementById('area').value) || 1.0;
+
+  const baseYield = BASE_YIELDS[crop];
+  const normalRain = DISTRICT_NORMAL_RAIN[district];
+  const rainRatio = rain / normalRain;
+  const irrMult = IRR_FACTORS[irrigation];
+
+  // Agronomic Response Function
+  let weatherMult = 1.0;
+  if (crop === 'Soybean' || crop === 'Cotton' || crop === 'Tur') {
+    if (rainRatio < 0.85) weatherMult *= 0.78;
+    else if (rainRatio > 1.20) weatherMult *= 1.04;
+    else weatherMult *= 1.02;
+
+    if (dry > 13) {
+      const penalty = irrigation === 'Rainfed' ? 0.24 : 0.06;
+      weatherMult -= penalty;
+    }
+  } else {
+    weatherMult = rainRatio < 0.80 ? 0.92 : 1.02;
+  }
+
+  // Price Momentum Incentive (+3% to +8%)
+  const priceIncentive = Math.min(1.08, Math.max(0.96, price / 5500.0 * 0.15 + 0.85));
+
+  // Predicted Yield
+  const predictedYield = Math.max(2.5, baseYield * irrMult * weatherMult * priceIncentive);
+  const baselineYield = baseYield * (irrigation === 'Rainfed' ? 0.95 : 1.10);
+  const surplusPct = ((predictedYield - baselineYield) / baselineYield) * 100.0;
+  const totalVolume = predictedYield * area;
+
+  // DOM Updates
+  document.getElementById('res-yield').innerText = predictedYield.toFixed(2) + ' q/ha';
+  document.getElementById('res-baseline').innerText = baselineYield.toFixed(2) + ' q/ha';
+  document.getElementById('res-total').innerText = totalVolume.toFixed(1) + ' Quintals';
+
+  const diffEl = document.getElementById('res-diff');
+  const bannerEl = document.getElementById('banner-box');
+  const tierTag = document.getElementById('tier-tag');
+  const actionText = document.getElementById('action-text');
+
+  if (surplusPct < -12.0) {
+    diffEl.innerText = surplusPct.toFixed(1) + '% vs Historical Normal';
+    diffEl.className = 'metric-diff diff-down';
+    bannerEl.className = 'result-banner banner-alert';
+    tierTag.className = 'tier-tag tier-3';
+    tierTag.innerText = 'Tier 3: Deficit Hedging';
+    actionText.innerHTML = `<strong>Shortfall Alert (${surplusPct.toFixed(1)}%):</strong> Severe dry spell combined with limited irrigation severely limits yield. <strong>Action:</strong> Divert warehouse logistics to surplus districts; avoid forward volume commitments and hedge price on commodity exchanges.`;
+  } else if (surplusPct >= 8.0) {
+    diffEl.innerText = '+' + surplusPct.toFixed(1) + '% vs Historical Normal';
+    diffEl.className = 'metric-diff diff-up';
+    bannerEl.className = 'result-banner banner-surplus';
+    tierTag.className = 'tier-tag tier-1';
+    tierTag.innerText = 'Tier 1: Aggressive Forward Procurement';
+    actionText.innerHTML = `<strong>Projected Yield Surplus (+${surplusPct.toFixed(1)}%):</strong> Excellent water and soil vigor. <strong>Action:</strong> Lock in 60-day advance pre-harvest contracts with FPOs at 6–8% discount; reserve local warehouse space.`;
+  } else {
+    diffEl.innerText = (surplusPct >= 0 ? '+' : '') + surplusPct.toFixed(1) + '% vs Historical Normal';
+    diffEl.className = 'metric-diff diff-up';
+    bannerEl.className = 'result-banner banner-normal';
+    tierTag.className = 'tier-tag tier-2';
+    tierTag.innerText = 'Tier 2: Balanced Dynamic Sourcing';
+    actionText.innerHTML = `<strong>Normal Seasonal Production:</strong> Yield is tracking within historical normal band. <strong>Action:</strong> Execute flexible spot purchasing during post-harvest peak mandi arrival dips (Nov–Jan).`;
+  }
+
+  document.getElementById('sig-rain').innerText = (rainRatio * 100).toFixed(1) + '% of district normal (' + normalRain + ' mm)';
+  document.getElementById('sig-dry').innerText = dry + ' days (' + (dry >= 14 ? 'Exceeds 14-day stress cliff' : 'Safe moisture threshold') + ')';
+  document.getElementById('sig-irr').innerText = irrigation + ' (' + (irrigation === 'Rainfed' ? '0% buffer against dry spells' : 'Active buffer against drought') + ')';
+}
+
+calculateRealtime();
+</script>
+
+</body>
+</html>
+
